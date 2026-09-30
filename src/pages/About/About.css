@@ -1,0 +1,58 @@
+.about-page__grid {
+  display: grid;
+  gap: var(--space-7);
+  align-items: center;
+}
+
+.about-page__media {
+  max-width: 420px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.about-page__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  /* El WebP ya viene recortado a esta proporción; cover + posición alta solo
+     protegen el encuadre del rostro si el contenedor llegara a cambiar. */
+  object-fit: cover;
+  object-position: 50% 30%;
+  background: var(--color-bg-alt);
+}
+
+.about-page__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.about-page__title {
+  font-size: clamp(2rem, 1.6rem + 1.8vw, 2.9rem);
+}
+
+.about-page__paragraph {
+  color: var(--color-ink-soft);
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+
+/* Único contenido de su sección: sin margen inferior para que el padding de
+   la sección quede simétrico. */
+.section-heading.about-philosophy-heading {
+  margin-bottom: 0;
+}
+
+@media (min-width: 860px) {
+  .about-page__grid {
+    grid-template-columns: 0.85fr 1.15fr;
+  }
+
+  .about-page__media {
+    margin-inline: 0;
+  }
+}

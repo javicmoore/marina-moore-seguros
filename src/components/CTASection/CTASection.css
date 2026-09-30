@@ -1,0 +1,58 @@
+.cta-section {
+  background-color: var(--color-primary);
+  border-radius: var(--radius-lg);
+  margin-inline: var(--container-padding);
+  color: var(--color-on-primary);
+}
+
+@media (min-width: 860px) {
+  .cta-section {
+    margin-inline: auto;
+    max-width: var(--container-width);
+  }
+}
+
+.cta-section__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+  max-width: 620px;
+}
+
+/* Dorado suave: el dorado base sobre el azul principal queda en 3.1:1,
+   insuficiente para texto pequeño; accent-soft da 7.1:1. */
+.cta-section__eyebrow {
+  color: var(--color-accent-soft);
+}
+
+.cta-section__title {
+  color: var(--color-on-primary);
+  font-size: clamp(1.9rem, 1.5rem + 1.8vw, 2.6rem);
+}
+
+.cta-section__description {
+  color: rgba(247, 244, 238, 0.75);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.cta-section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  width: 100%;
+}
+
+.cta-section__actions .btn {
+  flex: 1 1 auto;
+}
+
+@media (min-width: 560px) {
+  .cta-section__actions .btn {
+    flex: 0 1 auto;
+  }
+}

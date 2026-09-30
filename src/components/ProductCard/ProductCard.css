@@ -1,0 +1,168 @@
+.product-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  height: 100%;
+  transition: transform var(--transition), box-shadow var(--transition),
+    border-color var(--transition);
+}
+
+.product-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  flex-grow: 1;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-accent-soft);
+}
+
+.product-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-alt);
+  color: var(--color-accent-dark);
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.product-card:hover .product-card__icon {
+  background-color: var(--color-primary);
+  color: var(--color-accent);
+}
+
+.product-card__title {
+  font-size: 1.2rem;
+}
+
+.product-card__description {
+  color: var(--color-ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  flex-grow: 1;
+}
+
+.product-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-accent-dark);
+}
+
+.product-card__cta svg {
+  transition: transform var(--transition-fast);
+}
+
+.product-card:hover .product-card__cta svg {
+  transform: translateX(4px);
+}
+
+/* Tarjeta destacada (featured) --------------------------------------------
+   Protagonismo discreto: borde dorado suave, fondo crema muy ligero, badge
+   delineado y — en escritorio — ocupa toda la fila con una foto al lado. */
+
+.product-card--featured {
+  position: relative;
+  border-color: var(--color-accent-soft);
+  background: linear-gradient(160deg, var(--color-surface) 55%, #fbf7ef 100%);
+  box-shadow: var(--shadow-sm);
+}
+
+.product-card--featured::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: var(--space-6);
+  right: var(--space-6);
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+}
+
+.product-card--featured:hover {
+  border-color: var(--color-accent);
+}
+
+.product-card__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px var(--space-3);
+  border: 1px solid var(--color-accent-soft);
+  border-radius: var(--radius-full);
+  color: var(--color-accent-dark);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background-color: rgba(233, 220, 195, 0.25);
+}
+
+.product-card__media {
+  display: none;
+}
+
+@media (min-width: 860px) {
+  .product-card--featured {
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--space-7);
+    padding: var(--space-4);
+  }
+
+  .product-card--featured::before {
+    left: auto;
+    right: var(--space-7);
+    width: 40%;
+  }
+
+  .product-card--featured .product-card__media {
+    display: block;
+    flex: 0 0 42%;
+    min-height: 240px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms var(--ease);
+  }
+
+  .product-card__image--auto-turista {
+    object-position: 50% 60%;
+    filter: grayscale(0.15) saturate(0.62) contrast(1.04) brightness(0.95) sepia(0.06);
+  }
+
+  .product-card--featured:hover .product-card__image {
+    transform: scale(1.03);
+  }
+
+  .product-card--featured .product-card__body {
+    justify-content: center;
+    padding: var(--space-5) var(--space-5) var(--space-5) 0;
+  }
+
+  .product-card--featured .product-card__title {
+    font-size: 1.5rem;
+  }
+
+  .product-card--featured .product-card__description {
+    flex-grow: 0;
+    font-size: 1rem;
+    max-width: 44ch;
+  }
+}

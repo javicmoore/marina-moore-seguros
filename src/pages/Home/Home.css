@@ -1,0 +1,152 @@
+/* Hero ---------------------------------------------------------------- */
+
+.hero {
+  padding-block: var(--space-8) var(--space-9);
+  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+}
+
+/* Wider than the sitewide .container: gives the hero visual (carousel) more
+   room to breathe on large screens, while the left column below stays
+   comfortably close to its content width so the text-to-carousel gap
+   doesn't grow along with it. */
+.hero__container {
+  width: 100%;
+  max-width: 1600px;
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.hero__grid {
+  display: grid;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+}
+
+.hero__headline {
+  font-size: clamp(2.2rem, 1.7rem + 2.4vw, 3.6rem);
+  max-width: 16ch;
+}
+
+.hero__subtext {
+  color: var(--color-ink-soft);
+  font-size: 1.1rem;
+  line-height: 1.65;
+  max-width: 46ch;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.hero__media {
+  order: -1;
+}
+
+/* Single-column layout only: the carousel track's min-content is the sum of
+   all slide labels (~580px), which would otherwise stretch the grid column
+   past narrow viewports. Scoped so the two-column layout is untouched. */
+@media (max-width: 1023px) {
+  .hero__media {
+    min-width: 0;
+  }
+}
+
+/* Landscape tablets (still single column): cap and center the carousel so it
+   doesn't fill almost the whole first screen and push the headline below it. */
+@media (min-width: 900px) and (max-width: 1023px) {
+  .hero__media {
+    width: 100%;
+    max-width: 720px;
+    justify-self: center;
+  }
+}
+
+/* Two columns only from 1024px: below that there isn't room for the text
+   column (min 300px) + gap + the carousel's ~580px minimum, and the hero
+   overflowed horizontally between 900px and ~1010px. */
+@media (min-width: 1024px) {
+  .hero {
+    padding-block: var(--space-10) var(--space-9);
+  }
+
+  .hero__grid {
+    /* Left column only grows to fit its content (headline/subtext are
+       capped in ch units); every extra pixel of available width goes to
+       the carousel column instead of sitting empty next to the text. */
+    grid-template-columns: minmax(300px, 480px) 1fr;
+    gap: var(--space-7);
+  }
+
+  .hero__media {
+    order: 0;
+  }
+}
+
+/* Sobre Marina teaser --------------------------------------------------- */
+
+.about-teaser__grid {
+  display: grid;
+  gap: var(--space-7);
+  align-items: center;
+}
+
+.about-teaser__media {
+  max-width: 420px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.about-teaser__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  /* El WebP ya viene recortado a esta proporción; cover + posición alta solo
+     protegen el encuadre del rostro si el contenedor llegara a cambiar. */
+  object-fit: cover;
+  object-position: 50% 30%;
+  background: var(--color-bg-alt);
+}
+
+.about-teaser__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.about-teaser__title {
+  font-size: clamp(1.7rem, 1.4rem + 1.2vw, 2.3rem);
+}
+
+.about-teaser__paragraph {
+  color: var(--color-ink-soft);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+@media (min-width: 860px) {
+  .about-teaser__grid {
+    grid-template-columns: 0.85fr 1.15fr;
+  }
+
+  .about-teaser__media {
+    margin-inline: 0;
+  }
+}
+
+.process-heading {
+  margin-inline: auto;
+}

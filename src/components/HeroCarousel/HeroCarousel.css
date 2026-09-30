@@ -1,0 +1,307 @@
+.hero-carousel {
+  position: relative;
+  width: 100%;
+}
+
+.hero-carousel__viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  background-color: var(--color-primary);
+  touch-action: pan-y;
+}
+
+.hero-carousel__track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 600ms var(--ease);
+  /* Keeps the track on its own compositor layer permanently. Without it the
+     layer is created at the start of each slide change and dropped at the
+     end, forcing the (CSS-filtered) photos to be re-rasterized every time,
+     which shows up as a hitch at the start/end of the transition. */
+  will-change: transform;
+}
+
+.hero-carousel__slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: linear-gradient(155deg, var(--color-primary) 0%, var(--color-primary-soft) 100%);
+}
+
+.hero-carousel__slide--auto {
+  background-image: radial-gradient(120% 120% at 18% 15%, rgba(176, 141, 87, 0.4), transparent 60%),
+    linear-gradient(155deg, var(--color-primary) 0%, var(--color-primary-soft) 100%);
+}
+
+.hero-carousel__slide--gmm {
+  background-image: radial-gradient(120% 120% at 82% 15%, rgba(176, 141, 87, 0.4), transparent 60%),
+    linear-gradient(155deg, var(--color-primary) 0%, var(--color-primary-soft) 100%);
+}
+
+.hero-carousel__slide--hogar {
+  background-image: radial-gradient(120% 120% at 18% 85%, rgba(176, 141, 87, 0.4), transparent 60%),
+    linear-gradient(155deg, var(--color-primary) 0%, var(--color-primary-soft) 100%);
+}
+
+.hero-carousel__slide--ppr {
+  background-image: radial-gradient(120% 120% at 82% 85%, rgba(176, 141, 87, 0.4), transparent 60%),
+    linear-gradient(155deg, var(--color-primary) 0%, var(--color-primary-soft) 100%);
+}
+
+.hero-carousel__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  /* Shared baseline grade so all 4 photos read as one family: desaturated,
+     soft, slightly warm — coherent with the navy/gold/cream palette instead
+     of looking like straight, untouched stock photos. Each slide below
+     tunes strength on top of this baseline to compensate for how bright/
+     saturated/contrasted its particular source photo already is, so no
+     single slide stands out. */
+  filter: saturate(0.82) contrast(1.03) brightness(0.97) sepia(0.06);
+}
+
+/* Seguro de Auto — dusk drive, warm/saturated sunset bokeh in the source
+   photo: pulled back the most so the orange highlights don't read as the
+   "loud" slide next to the other three. Focal point kept low-center to keep
+   the hand/watch/wheel in frame (the vertical crop trims sky, not the
+   subject). */
+.hero-carousel__slide--auto .hero-carousel__image {
+  object-position: 50% 62%;
+  filter: grayscale(0.15) saturate(0.62) contrast(1.05) brightness(0.9) sepia(0.05);
+}
+
+/* Gastos Médicos Mayores — indoor consultation, already fairly neutral and
+   evenly lit, so only a light touch to match the family. */
+.hero-carousel__slide--gmm .hero-carousel__image {
+  object-position: 50% 42%;
+  filter: saturate(0.85) contrast(1.04) brightness(1) sepia(0.04);
+}
+
+/* Seguro de Hogar — bright sunny exterior with a saturated blue sky and the
+   most contrast of the four: dialed back the most in brightness/contrast so
+   it doesn't outshine the others. Focal point biased up to favor the
+   façade/entrance over the plain driveway at the bottom. */
+.hero-carousel__slide--hogar .hero-carousel__image {
+  object-position: 50% 30%;
+  filter: saturate(0.68) contrast(0.96) brightness(0.92) sepia(0.06);
+}
+
+/* Plan Personal de Retiro — overcast beach, already the most muted/neutral
+   source: lightest touch, just enough warmth to sit with the gold palette. */
+.hero-carousel__slide--ppr .hero-carousel__image {
+  object-position: 50% 38%;
+  filter: saturate(0.92) contrast(1.02) brightness(1.03) sepia(0.05);
+}
+
+/* Seguro de Auto Turista — coastal road at sunset, teal/orange and quite
+   saturated: pulled back like the Auto slide. Focal point low so the car
+   stays in frame above the label. */
+.hero-carousel__slide--auto-turista {
+  /* This fifth slide must not add to the track's min-content, which sizes
+     the carousel column between 1024px and ~1200px (see Home.css) — it
+     caused horizontal overflow there. Size containment zeroes its intrinsic
+     width, so the hero grid resolves exactly as with the original four
+     slides; the slide itself is still sized by flex-basis: 100%. */
+  contain: inline-size;
+  background-image: radial-gradient(120% 120% at 50% 15%, rgba(176, 141, 87, 0.4), transparent 60%),
+    linear-gradient(155deg, var(--color-primary) 0%, var(--color-primary-soft) 100%);
+}
+
+.hero-carousel__slide--auto-turista .hero-carousel__image {
+  object-position: 50% 70%;
+  filter: grayscale(0.15) saturate(0.6) contrast(1.04) brightness(0.9) sepia(0.06);
+}
+
+.hero-carousel__overlay {
+  position: absolute;
+  inset: 0;
+  /* Slightly stronger/taller than a purely decorative background would need,
+     since real photos can have bright detail right behind the label text. */
+  background: linear-gradient(0deg, rgba(var(--color-primary-deep-rgb), 0.88) 0%, rgba(var(--color-primary-deep-rgb), 0) 55%);
+  pointer-events: none;
+}
+
+.hero-carousel__label {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-6) var(--space-5);
+  color: var(--color-on-primary);
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.hero-carousel__label svg {
+  flex-shrink: 0;
+  color: var(--color-accent);
+  transition: transform var(--transition-fast);
+}
+
+/* Rich label (slide with text + CTA) ----------------------------------- */
+
+.hero-carousel__label--rich {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  /* Clear the dots, which sit centered at the bottom of the viewport. */
+  padding-bottom: calc(var(--space-6) + var(--space-3));
+}
+
+.hero-carousel__slide--auto-turista .hero-carousel__overlay {
+  background: linear-gradient(0deg, rgba(var(--color-primary-deep-rgb), 0.9) 0%, rgba(var(--color-primary-deep-rgb), 0.35) 45%, rgba(var(--color-primary-deep-rgb), 0) 75%);
+}
+
+.hero-carousel__text {
+  max-width: 42ch;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: rgba(247, 244, 238, 0.86);
+}
+
+.hero-carousel__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(176, 141, 87, 0.6);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-on-primary);
+}
+
+/* Phones / small tablets: the 16:10 frame is too short for three lines of
+   copy — the short text would sit under the prev/next arrows (vertically
+   centered). Keep title + CTA there; the text shows from 600px up. */
+@media (max-width: 599px) {
+  .hero-carousel__label--rich {
+    gap: var(--space-1);
+    padding-bottom: var(--space-6);
+  }
+
+  .hero-carousel__text {
+    display: none;
+  }
+
+  .hero-carousel__cta {
+    font-size: 0.8rem;
+  }
+}
+
+/* Narrowest phones: pull the title a few px lower so it clears the arrows. */
+@media (max-width: 419px) {
+  .hero-carousel__label--rich {
+    gap: 2px;
+  }
+
+  .hero-carousel__label--rich .hero-carousel__title {
+    font-size: 1.05rem;
+  }
+
+  .hero-carousel__cta {
+    margin-top: 0;
+  }
+}
+
+.hero-carousel__slide:hover .hero-carousel__label svg,
+.hero-carousel__slide:focus-visible .hero-carousel__label svg {
+  transform: translate(2px, -2px);
+}
+
+/* Arrows ------------------------------------------------------------ */
+
+.hero-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background-color: rgba(247, 244, 238, 0.15);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(247, 244, 238, 0.25);
+  color: var(--color-on-primary);
+  opacity: 0;
+  transition: opacity var(--transition-fast), background-color var(--transition-fast);
+}
+
+.hero-carousel:hover .hero-carousel__arrow,
+.hero-carousel:focus-within .hero-carousel__arrow {
+  opacity: 1;
+}
+
+.hero-carousel__arrow:hover {
+  background-color: rgba(247, 244, 238, 0.3);
+}
+
+.hero-carousel__arrow--prev {
+  left: var(--space-3);
+}
+
+.hero-carousel__arrow--next {
+  right: var(--space-3);
+}
+
+@media (max-width: 859px) {
+  .hero-carousel__arrow {
+    opacity: 0.85;
+  }
+}
+
+/* Dots ---------------------------------------------------------------- */
+
+.hero-carousel__dots {
+  position: absolute;
+  bottom: var(--space-4);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.hero-carousel__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: rgba(247, 244, 238, 0.4);
+  transition: width var(--transition-fast), background-color var(--transition-fast);
+}
+
+.hero-carousel__dot.is-active {
+  width: 22px;
+  background-color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-carousel__arrow {
+    opacity: 0.85;
+  }
+}

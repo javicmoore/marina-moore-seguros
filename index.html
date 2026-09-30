@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Favicons generados a partir del isotipo (public/images/logo-mark.png). -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Title, description, canonical, Open Graph, X y JSON-LD: los genera
+         vite-plugin-seo.js desde src/config/seo.js (un HTML por ruta en el build). -->
+    <!-- seo-head -->
+    <meta name="theme-color" content="#21476B" />
+    <!-- Primera foto del carrusel del hero (LCP en Home): se pide antes de que
+         cargue el JS. Mantener srcset/sizes sincronizados con HeroCarousel. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+      imagesrcset="/images/hero/hero-auto-640.webp 640w, /images/hero/hero-auto-960.webp 960w, /images/hero/hero-auto-1280.webp 1280w, /images/hero/hero-auto-1920.webp 1920w"
+      imagesizes="(min-width: 1600px) 1030px, (min-width: 1024px) calc(100vw - 624px), 92vw"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

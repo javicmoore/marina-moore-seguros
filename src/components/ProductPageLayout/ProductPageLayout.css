@@ -1,0 +1,329 @@
+/* Hero ------------------------------------------------------------------ */
+
+.product-hero {
+  padding-block: var(--space-8) var(--space-9);
+  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+}
+
+.product-hero__grid {
+  display: grid;
+  gap: var(--space-7);
+  align-items: center;
+}
+
+.product-hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+/* El H1 agrupa eyebrow + titular. Reproduce el gap de .product-hero__content
+   entre ambos y devuelve al eyebrow el line-height del body, que dentro del
+   h1 heredaría el 1.15 de los encabezados. El titular redeclara el
+   letter-spacing de los encabezados para calcularlo sobre su propio tamaño
+   (heredado, se calcularía sobre el del h1). */
+.product-hero__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.product-hero__heading .eyebrow {
+  line-height: 1.6;
+}
+
+.product-hero__headline {
+  font-size: clamp(2rem, 1.6rem + 2vw, 3.1rem);
+  letter-spacing: -0.01em;
+  max-width: 18ch;
+}
+
+.product-hero__subtext {
+  color: var(--color-ink-soft);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  max-width: 46ch;
+}
+
+.product-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.product-hero__media {
+  order: -1;
+}
+
+.product-hero__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  object-fit: cover;
+  object-position: 50% 50%;
+  /* Shared baseline grade so the four product photos read as one family —
+     desaturated, soft, slightly warm — instead of four untouched stock
+     photos with different light and saturation. Each variant below tunes
+     strength on top of this to compensate for how saturated/contrasted its
+     particular source photo already is, so no single one stands out. */
+  filter: saturate(0.85) contrast(1.02) brightness(0.99) sepia(0.04);
+}
+
+/* Auto — already fairly neutral/grey with a soft dusk backdrop: light touch. */
+.product-hero__image--auto {
+  filter: saturate(0.85) contrast(1.03) brightness(1) sepia(0.03);
+}
+
+/* GMM — bright, evenly lit clinical white: lightest touch of the four. */
+.product-hero__image--gmm {
+  filter: saturate(0.88) contrast(1.02) brightness(1.01) sepia(0.03);
+}
+
+/* Hogar — bright exterior with a saturated blue sky: pulled back the most
+   so it doesn't outshine the others. */
+.product-hero__image--hogar {
+  filter: saturate(0.28) contrast(0.94) brightness(0.98) sepia(0.1);
+}
+
+/* PPR — warm sunset gradient behind a dark silhouette: desaturate the sky
+   and lift shadows slightly so the figure doesn't read too heavy/dark. */
+.product-hero__image--ppr {
+  filter: saturate(0.72) contrast(1) brightness(1.06) sepia(0.04);
+}
+
+/* Auto Turista — saturated teal/orange sunset: pulled back like the Auto
+   carousel slide so it sits with the navy/gold family. */
+.product-hero__image--auto-turista {
+  object-position: 50% 60%;
+  filter: grayscale(0.15) saturate(0.62) contrast(1.04) brightness(0.95) sepia(0.06);
+}
+
+@media (min-width: 900px) {
+  .product-hero__grid {
+    grid-template-columns: 1.05fr 0.95fr;
+  }
+
+  .product-hero__media {
+    order: 0;
+  }
+}
+
+/* Descripción breve ------------------------------------------------------- */
+
+.product-page__description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+  max-width: 620px;
+}
+
+.product-page__icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-alt);
+  color: var(--color-accent-dark);
+}
+
+.product-page__description p {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--color-ink);
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+/* Beneficios --------------------------------------------------------------- */
+
+.product-page__benefits {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: 1fr;
+}
+
+.benefit-card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.benefit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.benefit-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-alt);
+  color: var(--color-accent-dark);
+  margin-bottom: var(--space-4);
+}
+
+.benefit-card__title {
+  font-size: 1.1rem;
+  margin-bottom: var(--space-2);
+}
+
+.benefit-card__description {
+  color: var(--color-ink-soft);
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+@media (min-width: 780px) {
+  .product-page__benefits {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Bloque de concientización ------------------------------------------------
+   Fondo azul claro de apoyo, filete dorado y tipografía de encabezado grande:
+   destaca sin recurrir a colores fuertes. */
+
+.product-highlight {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+  padding: var(--space-8) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, var(--color-primary-light) 0%, #eaf1f7 100%);
+  overflow: hidden;
+}
+
+.product-highlight::before {
+  content: "";
+  width: 48px;
+  height: 2px;
+  background-color: var(--color-accent);
+  margin-bottom: var(--space-2);
+}
+
+/* accent-dark sobre el azul claro no llega a AA para texto pequeño; el azul
+   principal da 7.7:1. */
+.product-highlight__eyebrow {
+  color: var(--color-primary);
+}
+
+.product-highlight__title {
+  font-size: clamp(1.9rem, 1.4rem + 2vw, 3rem);
+  max-width: 20ch;
+}
+
+.product-highlight__text {
+  max-width: 44ch;
+  font-family: var(--font-heading);
+  font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.45rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--color-ink);
+}
+
+@media (min-width: 860px) {
+  .product-highlight {
+    padding: var(--space-9) var(--space-8);
+  }
+}
+
+/* Para quién es -------------------------------------------------------------- */
+
+.product-page__ideal {
+  max-width: 760px;
+}
+
+.ideal-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.ideal-list__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 1.05rem;
+  color: var(--color-ink);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ideal-list__item:last-child {
+  border-bottom: none;
+}
+
+.ideal-list__item svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--color-accent-dark);
+}
+
+/* Producto relacionado --------------------------------------------------------- */
+
+.related-product {
+  display: grid;
+  gap: var(--space-6);
+  align-items: center;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-accent-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.related-product__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.related-product__image--auto-turista {
+  object-position: 50% 60%;
+  filter: grayscale(0.15) saturate(0.62) contrast(1.04) brightness(0.95) sepia(0.06);
+}
+
+.related-product__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.related-product__title {
+  font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.8rem);
+}
+
+.related-product__text {
+  color: var(--color-ink-soft);
+  line-height: 1.6;
+  max-width: 46ch;
+  margin-bottom: var(--space-2);
+}
+
+@media (min-width: 780px) {
+  .related-product {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--space-7);
+    padding: var(--space-5) var(--space-7) var(--space-5) var(--space-5);
+  }
+}

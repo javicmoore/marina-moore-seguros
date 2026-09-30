@@ -1,0 +1,43 @@
+.product-carousel {
+  display: flex;
+  gap: var(--space-5);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: var(--space-4);
+  margin-bottom: calc(var(--space-4) * -1);
+  scrollbar-width: none;
+}
+
+.product-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.product-carousel__item {
+  flex: 0 0 80%;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 540px) {
+  .product-carousel__item {
+    flex-basis: 46%;
+  }
+}
+
+@media (min-width: 860px) {
+  .product-carousel {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* La tarjeta destacada ocupa toda una fila; "dense" deja que las cuatro
+       tarjetas normales llenen la primera fila y la destacada quede debajo. */
+    grid-auto-flow: row dense;
+    overflow: visible;
+  }
+
+  .product-carousel__item--featured {
+    grid-column: 1 / -1;
+  }
+
+  .product-carousel__item {
+    flex-basis: auto;
+  }
+}

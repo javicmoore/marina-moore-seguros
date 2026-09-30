@@ -1,0 +1,152 @@
+.footer {
+  background-color: var(--color-primary-dark);
+  color: rgba(247, 244, 238, 0.7);
+  padding-top: var(--space-9);
+}
+
+.footer__grid {
+  display: grid;
+  gap: var(--space-7);
+  grid-template-columns: 1fr;
+  padding-bottom: var(--space-8);
+  border-bottom: 1px solid rgba(247, 244, 238, 0.1);
+}
+
+.footer__logo-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+/* Same crop technique as .header__logo-mark--image (see Header.css for the
+   full explanation): logo-mark.png's 463x539 canvas has a lot of empty
+   transparent margin around the emblem, so the <img> is scaled up and
+   shifted to make the measured ink box (x:168–288, y:125–305 px) fill the
+   visible area instead of the whole canvas. Kept at header size × 1.2 per
+   the site's logo sizing ratio — change --logo-h here to resize. */
+.footer__logo-mark {
+  display: flex;
+  --logo-h: 72px;
+  height: var(--logo-h);
+  aspect-ratio: 121 / 181;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.footer__logo-mark img {
+  position: absolute;
+  top: calc(var(--logo-h) * -125 / 181);
+  left: calc(var(--logo-h) * -168 / 181);
+  width: calc(var(--logo-h) * 463 / 181);
+  height: calc(var(--logo-h) * 539 / 181);
+  max-width: none;
+  display: block;
+}
+
+.footer__logo {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-on-primary);
+}
+
+.footer__tagline {
+  max-width: 320px;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: var(--space-5);
+}
+
+.footer__socials {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.footer__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background-color: rgba(247, 244, 238, 0.08);
+  color: var(--color-on-primary);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.footer__social-link:hover {
+  background-color: var(--color-accent);
+  color: var(--color-primary-deep);
+}
+
+.footer__col-title {
+  display: block;
+  color: var(--color-on-primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+
+.footer__nav ul,
+.footer__contact ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.footer__nav a {
+  font-size: 0.92rem;
+  transition: color var(--transition-fast);
+}
+
+.footer__nav a:hover {
+  color: var(--color-on-primary);
+}
+
+.footer__contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.92rem;
+  transition: color var(--transition-fast);
+}
+
+.footer__contact-link:hover {
+  color: var(--color-on-primary);
+}
+
+.footer__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding-block: var(--space-5);
+  font-size: 0.82rem;
+}
+
+.footer__legal-link {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: rgba(247, 244, 238, 0.6);
+}
+
+.footer__legal-link:hover {
+  color: var(--color-on-primary);
+}
+
+@media (min-width: 640px) {
+  .footer__grid {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+
+  .footer__bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

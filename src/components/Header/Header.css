@@ -1,0 +1,247 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-primary);
+  border-bottom: 1px solid rgba(247, 244, 238, 0.08);
+  transition: box-shadow var(--transition), background-color var(--transition);
+}
+
+.header--scrolled {
+  box-shadow: 0 8px 30px rgba(var(--color-primary-deep-rgb), 0.25);
+}
+
+.header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1rem, 2vw, 2rem);
+  height: 76px;
+}
+
+/* Logo */
+
+.header__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.header__logo-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Fallback used only while business.logoUrl is unset: a solid badge so the
+   monogram initials stay legible without any image. */
+.header__logo-mark--text {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-accent);
+  color: var(--color-primary-deep);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* logo-mark.png has real alpha transparency, so the emblem floats directly
+   on the header's navy background — no badge/box needed. BUT the 463x539
+   canvas has a lot of empty transparent margin around the actual emblem
+   (it kept the full lockup's canvas after the wordmark/tagline were
+   removed): the visible ink only occupies x:168–288, y:125–305 px, i.e. a
+   121x539 → 121x181 box starting at (168, 125). Sizing the <img> to the
+   *canvas* would make the emblem look tiny inside the header regardless of
+   how tall the badge is — so instead we scale the image up so that exact
+   box fills the visible area, and shift it into place with a matching
+   negative offset. `--logo-h` is the only value to tune the visual height;
+   every other number below is derived from it plus the measured box.
+   Re-measure these four numbers if logo-mark.png is ever replaced. */
+.header__logo-mark--image {
+  --logo-h: 60px;
+  height: var(--logo-h);
+  aspect-ratio: 121 / 181;
+  overflow: hidden;
+  position: relative;
+}
+
+.header__logo-mark--image img {
+  position: absolute;
+  top: calc(var(--logo-h) * -125 / 181);
+  left: calc(var(--logo-h) * -168 / 181);
+  width: calc(var(--logo-h) * 463 / 181);
+  height: calc(var(--logo-h) * 539 / 181);
+  max-width: none;
+  display: block;
+}
+
+.header__logo-text {
+  color: var(--color-on-primary);
+  font-family: var(--font-heading);
+  font-size: clamp(0.95rem, 0.85rem + 0.35vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+/* Desktop nav */
+
+.header__nav {
+  display: none;
+  min-width: 0;
+}
+
+.header__nav > ul {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.85rem, 1.5vw, 1.65rem);
+  flex-wrap: nowrap;
+}
+
+.header__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  padding: var(--space-2) 0;
+  color: rgba(247, 244, 238, 0.82);
+  font-size: clamp(0.85rem, 0.78rem + 0.2vw, 0.95rem);
+  font-weight: 500;
+  white-space: nowrap;
+  position: relative;
+  transition: color var(--transition-fast);
+}
+
+.header__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-fast);
+}
+
+.header__link:hover,
+.header__link.is-active {
+  color: var(--color-on-primary);
+}
+
+.header__link:hover::after,
+.header__link.is-active::after {
+  transform: scaleX(1);
+}
+
+/* Actions */
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-shrink: 0;
+}
+
+.header__cta {
+  display: none;
+}
+
+.header__actions .header__cta {
+  padding: 0.7rem 1.4rem;
+  font-size: clamp(0.82rem, 0.76rem + 0.2vw, 0.92rem);
+  white-space: nowrap;
+}
+
+.header__menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--color-on-primary);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.header__menu-toggle:hover {
+  background-color: rgba(247, 244, 238, 0.1);
+}
+
+/* Mobile panel */
+
+.header__mobile {
+  position: fixed;
+  inset: 76px 0 0 0;
+  background-color: var(--color-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-6) var(--container-padding) var(--space-7);
+  transform: translateY(-12px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
+  overflow-y: auto;
+}
+
+.header__mobile.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.header__mobile-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.header__mobile-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid rgba(247, 244, 238, 0.12);
+  color: var(--color-on-primary);
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.header__mobile-link--sub {
+  padding-left: var(--space-5);
+  font-size: 1.05rem;
+  color: rgba(247, 244, 238, 0.78);
+}
+
+.header__mobile-cta {
+  width: 100%;
+  margin-top: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+  .header__nav {
+    display: block;
+  }
+
+  .header__cta {
+    display: inline-flex;
+  }
+
+  .header__menu-toggle {
+    display: none;
+  }
+
+  .header__mobile {
+    display: none;
+  }
+}

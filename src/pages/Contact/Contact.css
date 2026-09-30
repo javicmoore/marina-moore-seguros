@@ -1,0 +1,73 @@
+.contact-grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: 1fr;
+  margin-bottom: var(--space-6);
+}
+
+.contact-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+.contact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent-soft);
+}
+
+.contact-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-alt);
+  color: var(--color-accent-dark);
+  margin-bottom: var(--space-2);
+}
+
+.contact-card__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.contact-card__value {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--color-ink);
+}
+
+.contact-card__cta {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-accent-dark);
+  margin-top: var(--space-1);
+}
+
+.contact-page__booking {
+  margin-top: var(--space-7);
+}
+
+@media (min-width: 640px) {
+  .contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .contact-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
