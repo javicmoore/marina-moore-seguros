@@ -90,10 +90,13 @@
   filter: saturate(0.28) contrast(0.94) brightness(0.98) sepia(0.1);
 }
 
-/* PPR — warm sunset gradient behind a dark silhouette: desaturate the sky
-   and lift shadows slightly so the figure doesn't read too heavy/dark. */
+/* PPR — bright beach with a saturated turquoise sea and palm greens: pulled
+   back and warmed so it sits with the cream/gold palette. The source is 2:3,
+   so the 4:5 crop is biased low to keep the person in the beach chair (lower
+   right) in frame with sand beneath, trimming only the top of the palm. */
 .product-hero__image--ppr {
-  filter: saturate(0.72) contrast(1) brightness(1.06) sepia(0.04);
+  object-position: 50% 72%;
+  filter: saturate(0.55) contrast(0.98) brightness(0.98) sepia(0.08);
 }
 
 /* Auto Turista — saturated teal/orange sunset: pulled back like the Auto

@@ -276,7 +276,7 @@ export const products = [
     },
     heroImage: {
       src: "/images/sections/ppr-vertical.jpg",
-      alt: "Persona observando el horizonte al atardecer, mirando hacia el futuro.",
+      alt: "Persona descansando en una silla de playa bajo una palmera, frente al mar.",
     },
     description:
       "El retiro no es el fin del trabajo, es el inicio de las vacaciones más largas de tu vida.",
@@ -287,6 +287,9 @@ export const products = [
       title: "Garantiza la tranquilidad de tu hogar",
       text: "Planear tu retiro no es solo pensar en ti, es quitarle una futura carga económica a tus hijos. Transforma tu jubilación en una etapa de disfrute total y estabilidad financiera.",
     },
+    // Muestra el simulador ilustrativo de retiro justo después de la
+    // introducción. Valores y textos en config/retirementSimulator.js.
+    retirementSimulator: true,
     // Texto del bloque CTA final (opcional; sin él se usa el texto genérico).
     ctaDescription:
       "Construye hoy el presupuesto para las vacaciones más largas de tu vida. Protege el futuro de tu familia y disfruta del retiro sin preocupaciones.",

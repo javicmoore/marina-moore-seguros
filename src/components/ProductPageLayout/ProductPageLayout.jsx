@@ -2,6 +2,7 @@ import { CheckCircle2, ArrowRight } from "lucide-react";
 import Button from "../Button/Button.jsx";
 import CTASection from "../CTASection/CTASection.jsx";
 import SectionHeading from "../SectionHeading/SectionHeading.jsx";
+import RetirementSimulator from "../RetirementSimulator/RetirementSimulator.jsx";
 import { whatsappUrl, getProductBySlug } from "../../config/siteConfig.js";
 import "./ProductPageLayout.css";
 
@@ -61,8 +62,13 @@ function ProductPageLayout({ product }) {
         </div>
       </section>
 
-      {/* Beneficios ------------------------------------------------------ */}
-      <section className="section section--alt">
+      {/* Simulador ilustrativo de retiro (opcional, hoy solo PPR). Va justo
+          después de la introducción para darle protagonismo. --------------- */}
+      {product.retirementSimulator && <RetirementSimulator />}
+
+      {/* Beneficios: si arriba está el simulador (fondo alterno), van sobre el
+          fondo base para no encimar dos bandas del mismo color. ------------ */}
+      <section className={product.retirementSimulator ? "section" : "section section--alt"}>
         <div className="container">
           <SectionHeading eyebrow="Beneficios" title="Lo que puedes esperar" />
           <div className="product-page__benefits">

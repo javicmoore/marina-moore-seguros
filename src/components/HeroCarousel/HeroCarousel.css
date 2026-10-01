@@ -98,11 +98,13 @@
   filter: saturate(0.68) contrast(0.96) brightness(0.92) sepia(0.06);
 }
 
-/* Plan Personal de Retiro — overcast beach, already the most muted/neutral
-   source: lightest touch, just enough warmth to sit with the gold palette. */
+/* Plan Personal de Retiro — couple on a lake dock under an overcast sky,
+   already muted and a little dark: light touch, lifted slightly and warmed
+   to sit with the gold palette. Focal point a bit above center keeps both
+   figures clear of the label at the bottom. */
 .hero-carousel__slide--ppr .hero-carousel__image {
-  object-position: 50% 38%;
-  filter: saturate(0.92) contrast(1.02) brightness(1.03) sepia(0.05);
+  object-position: 50% 40%;
+  filter: saturate(0.85) contrast(1.02) brightness(1.06) sepia(0.08);
 }
 
 /* Seguro de Auto Turista — coastal road at sunset, teal/orange and quite

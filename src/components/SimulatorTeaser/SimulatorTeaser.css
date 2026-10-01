@@ -1,0 +1,170 @@
+/* Teaser del simulador de PPR (Home) ----------------------------------------
+   Banda de ancho completo en azul claro (el mismo degradado del bloque de
+   concientización de producto) para separarse de las secciones crema que la
+   rodean. Móvil: titular → cifras → CTA. Escritorio: texto y CTA a la
+   izquierda, mini gráfica a la derecha. */
+
+.simulator-teaser {
+  background: linear-gradient(160deg, var(--color-primary-light) 0%, #eaf1f7 100%);
+}
+
+.simulator-teaser__grid {
+  display: grid;
+  grid-template-areas:
+    "copy"
+    "visual"
+    "action";
+  gap: var(--space-6);
+}
+
+.simulator-teaser__copy {
+  grid-area: copy;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.simulator-teaser__copy::before {
+  content: "";
+  order: -1;
+  width: 48px;
+  height: 2px;
+  background-color: var(--color-accent);
+}
+
+/* accent-dark no llega a AA sobre el azul claro; el azul principal sí. */
+.simulator-teaser__eyebrow {
+  color: var(--color-primary);
+}
+
+.simulator-teaser__title {
+  max-width: 16ch;
+  font-size: clamp(2rem, 1.5rem + 2.2vw, 3.2rem);
+}
+
+.simulator-teaser__text {
+  max-width: 40ch;
+  color: var(--color-ink-soft);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.simulator-teaser__action {
+  grid-area: action;
+}
+
+/* Mini gráfica ------------------------------------------------------------- */
+
+.simulator-teaser__visual {
+  grid-area: visual;
+  min-width: 0;
+  padding: var(--space-6) var(--space-5) var(--space-5);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.simulator-teaser__contribution {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--space-2);
+  font-size: 0.9rem;
+  color: var(--color-ink-soft);
+}
+
+.simulator-teaser__contribution strong {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* Columnas que crecen desde una línea base común. La altura de cada barra es
+   proporcional al monto (--ratio = monto / monto mayor). */
+.teaser-chart {
+  --plot-h: 150px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  margin-top: var(--space-5);
+}
+
+.teaser-chart__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.teaser-chart__value {
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 0.9rem + 1.5vw, 2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: var(--color-ink);
+}
+
+.teaser-chart__bar {
+  width: min(64px, 58%);
+  height: calc(var(--ratio) * var(--plot-h));
+  border-radius: 4px 4px 0 0;
+  background-color: var(--color-primary);
+}
+
+/* Empezar a los 25 es el escenario protagonista: barra dorada. */
+.teaser-chart__col--lead .teaser-chart__bar {
+  background-color: var(--color-accent);
+}
+
+.teaser-chart__label {
+  align-self: stretch;
+  padding-top: var(--space-2);
+  margin-top: calc(var(--space-2) * -1);
+  border-top: 1px solid var(--color-border-strong);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+
+.simulator-teaser__note {
+  margin-top: var(--space-5);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+}
+
+@media (min-width: 600px) {
+  .simulator-teaser__visual {
+    padding: var(--space-7) var(--space-7) var(--space-6);
+  }
+
+  .teaser-chart {
+    --plot-h: 190px;
+  }
+}
+
+@media (min-width: 900px) {
+  .simulator-teaser__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "copy visual"
+      "action visual";
+    grid-template-rows: auto 1fr;
+    column-gap: var(--space-8);
+    row-gap: var(--space-6);
+    align-items: center;
+  }
+
+  .simulator-teaser__copy {
+    align-self: end;
+  }
+
+  .simulator-teaser__action {
+    align-self: start;
+  }
+}

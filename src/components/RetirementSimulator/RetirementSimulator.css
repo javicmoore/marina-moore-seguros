@@ -1,0 +1,627 @@
+/* Simulador ilustrativo de retiro (/ppr) ------------------------------------
+   Colores de las barras: azul = lo que aporta el cliente, dorado = lo que
+   crece. Cada contexto redefine las variables según su fondo. */
+
+.retirement-sim {
+  --bar-contributed: var(--color-primary);
+  --bar-growth: var(--color-accent);
+  /* Al llegar por /ppr#simulador: compensa el header sticky (77px) y recorta
+     parte del padding superior para que el título quede cerca del header. */
+  scroll-margin-top: calc(77px - var(--space-7));
+}
+
+.retirement-sim:focus {
+  outline: none;
+}
+
+.retirement-sim__heading {
+  max-width: 720px;
+}
+
+.retirement-sim__simulator {
+  display: grid;
+  gap: var(--space-5);
+}
+
+@media (min-width: 900px) {
+  .retirement-sim__simulator {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: var(--space-6);
+  }
+}
+
+/* Controles ---------------------------------------------------------------- */
+
+.sim-controls {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.sim-controls__title {
+  font-size: 1.35rem;
+}
+
+.sim-controls__text {
+  margin-top: var(--space-2);
+  color: var(--color-ink-soft);
+  font-size: 0.95rem;
+}
+
+.sim-controls__fields {
+  display: grid;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+@media (min-width: 600px) {
+  .sim-controls {
+    padding: var(--space-7);
+  }
+}
+
+.sim-field__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.sim-field__label {
+  min-width: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* Valor editable en forma de píldora; el foco se marca en la píldora
+   completa (el input interno no dibuja su propio contorno). */
+.sim-field__value {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3em;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg);
+  color: var(--color-ink-muted);
+  font-weight: 600;
+  transition: border-color var(--transition-fast);
+}
+
+.sim-field__value:focus-within {
+  border-color: var(--color-accent);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.sim-field__input {
+  width: calc(var(--chars) * 1ch + 0.25ch);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-ink);
+  font-size: 1rem; /* 16px evita el zoom automático de iOS al enfocar */
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.sim-field__input:focus-visible {
+  outline: none;
+}
+
+.sim-field__unit {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Slider: la parte recorrida se pinta en dorado con --fill (0–100 %). */
+.sim-field__range {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  margin: var(--space-2) 0 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sim-field__range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    to right,
+    var(--color-accent) var(--fill),
+    var(--color-border) var(--fill)
+  );
+}
+
+.sim-field__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  margin-top: -9px;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast);
+}
+
+.sim-field__range::-moz-range-track {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-border);
+}
+
+.sim-field__range::-moz-range-progress {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent);
+}
+
+.sim-field__range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.sim-field__range:active::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+
+.sim-field__scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--color-ink-muted);
+}
+
+/* Resultados --------------------------------------------------------------- */
+
+.sim-results {
+  --bar-contributed: var(--color-primary-light);
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    160deg,
+    var(--color-primary-soft) 0%,
+    var(--color-primary) 45%,
+    var(--color-primary-dark) 100%
+  );
+  color: var(--color-on-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+.sim-results::before {
+  content: "";
+  width: 48px;
+  height: 2px;
+  background-color: var(--color-accent);
+}
+
+@media (min-width: 600px) {
+  .sim-results {
+    padding: var(--space-7);
+  }
+}
+
+/* Mismo criterio que .cta-section__eyebrow: accent-soft da 7:1 sobre azul. */
+.sim-results__eyebrow {
+  color: var(--color-accent-soft);
+}
+
+/* El tamaño se ajusta a la longitud del monto (--chars) y al ancho de la
+   tarjeta, para que cifras largas nunca se desborden en móvil. */
+.sim-results__amount {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 1.5rem + 2.5vw, 3.4rem);
+  font-size: min(3.6rem, calc(100cqi / (var(--chars) * 0.64)));
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--color-on-primary);
+}
+
+.sim-results__caption {
+  margin-top: calc(var(--space-2) * -1);
+  color: rgba(247, 244, 238, 0.75);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.sim-results__caption--notice {
+  color: var(--color-accent-soft);
+}
+
+.sim-results__stats {
+  display: grid;
+  gap: var(--space-3);
+  margin: auto 0 0;
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(247, 244, 238, 0.18);
+}
+
+.sim-stat {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.sim-stat dt {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.9rem;
+  color: rgba(247, 244, 238, 0.75);
+}
+
+.sim-stat dd {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-on-primary);
+  white-space: nowrap;
+  text-align: right;
+}
+
+@container (min-width: 460px) {
+  .sim-results__stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .sim-stat {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+
+  .sim-stat dd {
+    font-size: 1.15rem;
+    text-align: left;
+  }
+}
+
+/* Barra aportado / crecimiento (resultados y gráfica) ----------------------
+   Base cuadrada a la izquierda, extremo redondeado y 2px de separación
+   entre segmentos. */
+
+.sim-bar {
+  display: flex;
+  gap: 2px;
+  width: 100%;
+  height: 12px;
+}
+
+.sim-bar__segment {
+  height: 100%;
+}
+
+.sim-bar__segment--contributed {
+  background-color: var(--bar-contributed);
+}
+
+.sim-bar__segment--growth {
+  background-color: var(--bar-growth);
+  border-radius: 0 4px 4px 0;
+}
+
+.sim-swatch {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.sim-swatch--contributed {
+  background-color: var(--bar-contributed);
+}
+
+.sim-swatch--growth {
+  background-color: var(--bar-growth);
+}
+
+/* Comparativo -------------------------------------------------------------- */
+
+.sim-comparison {
+  margin-top: var(--space-7);
+  padding: var(--space-6) var(--space-5);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 600px) {
+  .sim-comparison {
+    padding: var(--space-7);
+  }
+}
+
+.sim-comparison__header {
+  max-width: 560px;
+}
+
+.sim-comparison__title {
+  font-size: 1.35rem;
+}
+
+.sim-comparison__text {
+  margin-top: var(--space-2);
+  color: var(--color-ink-soft);
+  font-size: 0.95rem;
+}
+
+.sim-chart {
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+.sim-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+}
+
+.sim-legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sim-chart__labels {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.sim-chart__label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-ink);
+}
+
+.sim-chart__years {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--color-ink-muted);
+}
+
+.sim-chart__value {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--color-ink);
+}
+
+.sim-chart .sim-bar {
+  height: 14px;
+}
+
+/* Tabla: en móvil cada fila se convierte en tarjeta con etiquetas. */
+
+.sim-table {
+  width: 100%;
+  margin-top: var(--space-6);
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.sim-table thead {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.sim-table,
+.sim-table tbody,
+.sim-table tr,
+.sim-table th,
+.sim-table td {
+  display: block;
+}
+
+.sim-table tbody tr {
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.sim-table tbody th {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: left;
+  color: var(--color-ink);
+}
+
+.sim-table td {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-1);
+  color: var(--color-ink);
+  text-align: right;
+}
+
+.sim-table td::before {
+  content: attr(data-label);
+  color: var(--color-ink-soft);
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.sim-table__total {
+  font-weight: 700;
+}
+
+@media (min-width: 900px) {
+  .sim-table {
+    display: table;
+  }
+
+  .sim-table thead {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    display: table-header-group;
+  }
+
+  .sim-table tbody {
+    display: table-row-group;
+  }
+
+  .sim-table tr {
+    display: table-row;
+  }
+
+  .sim-table th,
+  .sim-table td {
+    display: table-cell;
+    padding: var(--space-4);
+    text-align: right;
+  }
+
+  .sim-table td::before {
+    content: none;
+  }
+
+  .sim-table thead th {
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--color-border-strong);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  .sim-table th:first-child {
+    padding-left: 0;
+    text-align: left;
+  }
+
+  .sim-table th:last-child,
+  .sim-table td:last-child {
+    padding-right: 0;
+  }
+
+  .sim-table tbody tr {
+    border-top: 0;
+  }
+
+  .sim-table tbody th,
+  .sim-table tbody td {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .sim-table tbody tr:last-child th,
+  .sim-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .sim-table tbody th {
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .sim-table__total {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+  }
+}
+
+/* Mensaje y disclaimer ----------------------------------------------------- */
+
+.sim-closing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+  text-align: center;
+}
+
+.sim-closing::before {
+  content: "";
+  width: 48px;
+  height: 2px;
+  background-color: var(--color-accent);
+}
+
+.sim-closing__message {
+  max-width: 22ch;
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.3rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.sim-closing__detail {
+  max-width: 52ch;
+  color: var(--color-ink-soft);
+  line-height: 1.6;
+}
+
+.sim-closing__detail strong {
+  color: var(--color-ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ink-soft (no ink-muted) para mantener contraste AA sobre el fondo alterno. */
+.sim-closing__disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  max-width: 68ch;
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-strong);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  text-align: left;
+  color: var(--color-ink-soft);
+}
+
+.sim-closing__disclaimer svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--color-accent-dark);
+}

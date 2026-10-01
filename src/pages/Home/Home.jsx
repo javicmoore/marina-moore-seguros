@@ -5,6 +5,7 @@ import ProductCarousel from "../../components/ProductCarousel/ProductCarousel.js
 import ProcessSteps from "../../components/ProcessSteps/ProcessSteps.jsx";
 import CTASection from "../../components/CTASection/CTASection.jsx";
 import HeroCarousel from "../../components/HeroCarousel/HeroCarousel.jsx";
+import SimulatorTeaser from "../../components/SimulatorTeaser/SimulatorTeaser.jsx";
 import { bookingHref, about, marinaPhotos } from "../../config/siteConfig.js";
 import useDocumentMeta from "../../hooks/useDocumentMeta.js";
 import "./Home.css";
@@ -56,6 +57,9 @@ function Home() {
           <ProductCarousel />
         </div>
       </section>
+
+      {/* Teaser del simulador de PPR (lleva a /ppr#simulador) ------------- */}
+      <SimulatorTeaser />
 
       {/* Sobre Marina (teaser) --------------------------------------------- */}
       <section className="section section--alt about-teaser">
