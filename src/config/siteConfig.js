@@ -15,8 +15,8 @@ import {
   ShieldCheck,
   Stethoscope,
   Wallet,
-  Clock,
   Users,
+  UsersRound,
   FileCheck,
   Building2,
   Umbrella,
@@ -40,7 +40,8 @@ export const business = {
   // transparencia real, así que flota directo sobre el fondo oscuro sin caja
   // ni recorte. Cambiar solo esta ruta actualiza el logo en todo el sitio.
   //
-  // También existe /images/logo-mark-with-text.png (mismo emblema + "Marina
+  // También existe photos/originals/unused/images/logo-mark-with-text.png
+  // (fuera de public/, no se publica; mismo emblema + "Marina
   // Moore" ya integrado como texto en la imagen). No se usa en el header ni
   // el footer para evitar duplicar el nombre y mezclar tipografías — el sitio
   // ya tipografía "Marina Moore Seguros" con la fuente de marca (Fraunces) en
@@ -85,6 +86,7 @@ export const bookingHref = contact.bookingUrl || whatsappUrl;
 // -----------------------------------------------------------------------------
 export const navLinks = [
   { label: "Inicio", to: "/" },
+  { label: "PPR", to: "/ppr" },
   { label: "GMM", to: "/gmm" },
   // Auto Turista no ocupa un lugar propio en la barra de escritorio (para
   // mantenerla limpia): "Auto" se marca activo también en /auto-turista y el
@@ -96,7 +98,6 @@ export const navLinks = [
     children: [{ label: "Auto Turista", to: "/auto-turista" }],
   },
   { label: "Hogar", to: "/hogar" },
-  { label: "PPR", to: "/ppr" },
   { label: "Sobre Marina", to: "/sobre-marina" },
   { label: "Contacto", to: "/contacto" },
 ];
@@ -110,6 +111,27 @@ export const navLinks = [
 // de publicar — no incluyen coberturas, montos ni aseguradoras específicas
 // porque esa información todavía no ha sido proporcionada.
 // -----------------------------------------------------------------------------
+
+// Foto vertical del hero de cada producto: WebP en varios anchos
+// (public/images/sections/<slug>-vertical-<ancho>.webp), generados sin recorte
+// desde los JPG originales que ahora están en photos/originals/. El navegador
+// elige el archivo según PRODUCT_HERO_SIZES, que describe el ancho real de la
+// imagen en ProductPageLayout.css (columna derecha en escritorio, ancho del
+// contenedor en móvil): mantenerlos sincronizados si cambia ese layout.
+// vite-plugin-seo.js usa estos mismos datos para precargar la foto en el HTML
+// de cada página de producto.
+export const PRODUCT_HERO_SIZES =
+  "(min-width: 1220px) 511px, (min-width: 900px) calc(44vw - 23px), (min-width: 500px) 92vw, calc(100vw - 40px)";
+
+function productHeroImage(slug, widths, alt) {
+  return {
+    src: `/images/sections/${slug}-vertical-800.webp`,
+    srcSet: widths.map((w) => `/images/sections/${slug}-vertical-${w}.webp ${w}w`).join(", "),
+    sizes: PRODUCT_HERO_SIZES,
+    alt,
+  };
+}
+
 export const products = [
   {
     slug: "gmm",
@@ -123,10 +145,11 @@ export const products = [
       subtext:
         "Protege tus finanzas con un seguro de Gastos Médicos Mayores y enfócate en tu recuperación, no en la cuenta del hospital.",
     },
-    heroImage: {
-      src: "/images/sections/gmm-vertical.jpg",
-      alt: "Profesional de la salud sosteniendo un estetoscopio.",
-    },
+    heroImage: productHeroImage(
+      "gmm",
+      [480, 800, 1200, 1600],
+      "Profesional de la salud sosteniendo un estetoscopio.",
+    ),
     description:
       "La tranquilidad de saber que tu salud es la prioridad, sin que el dinero sea un obstáculo.",
     // Título del bloque CTA final (opcional; sin él se usa "Hablemos sobre
@@ -152,7 +175,7 @@ export const products = [
     idealFor: [
       "Quieres proteger tu patrimonio ante un imprevisto de salud.",
       "Buscas mayor libertad para elegir dónde atenderte.",
-      "Estás formando o ya tienes una familia que depende de ti.",
+      "Estás formando o ya tienes una familia que depende de ti y quieres protegerla.",
     ],
   },
   {
@@ -167,10 +190,11 @@ export const products = [
       subtext:
         "Cobertura pensada para acompañarte en el día a día, protegiendo tu vehículo, tu bolsillo y a quienes te rodean.",
     },
-    heroImage: {
-      src: "/images/sections/auto-vertical.jpg",
-      alt: "Detalle del lateral de un automóvil con luz suave de atardecer.",
-    },
+    heroImage: productHeroImage(
+      "auto",
+      [480, 800, 1200, 1600],
+      "Detalle del lateral de un automóvil con luz suave de atardecer.",
+    ),
     description:
       "Analizamos tu forma de manejar y tus prioridades para encontrar una cobertura que te dé tranquilidad real, no solo un papel.",
     benefits: [
@@ -185,9 +209,10 @@ export const products = [
         description: "Respaldo frente a daños ocasionados a terceros.",
       },
       {
-        icon: Clock,
-        title: "Asistencia vial",
-        description: "Apoyo disponible cuando ocurre un contratiempo en el camino.",
+        icon: UsersRound,
+        title: "Protección para todos en el vehículo",
+        description:
+          "Cobertura para las personas que viajan en el vehículo, incluyendo al conductor.",
       },
     ],
     idealFor: [
@@ -229,16 +254,17 @@ export const products = [
       subtext:
         "Protección para acompañarte también cuando tu viaje cruza fronteras. Te asesoro para que salgas a carretera sabiendo qué opción se ajusta a tu viaje.",
     },
-    heroImage: {
-      src: "/images/sections/auto-turista-vertical.jpg",
-      alt: "Automóvil detenido en una carretera costera al atardecer.",
-    },
+    heroImage: productHeroImage(
+      "auto-turista",
+      [480, 800, 1000],
+      "Automóvil detenido en una carretera costera al atardecer.",
+    ),
     cardImage: {
       src: "/images/hero/hero-auto-turista-960.jpg",
       alt: "",
     },
     description:
-      "Además del seguro de auto para el día a día, Marina también ofrece Seguro de Auto Turista. Cuéntame de tu viaje y revisamos juntos la opción adecuada.",
+      "Viajar a México en auto es una de las mejores formas de conocer el país. Es por ello que contamos con un seguro que protege tu auto durante tu estancia, sin importar si se trata de un viaje de trabajo o de placer.",
     benefits: [
       {
         icon: Compass,
@@ -252,8 +278,8 @@ export const products = [
       },
       {
         icon: ShieldCheck,
-        title: "Viaja con tranquilidad",
-        description: "Sal a carretera sabiendo que cuentas con respaldo.",
+        title: "Protección personalizada",
+        description: "De acuerdo con los días de estancia, desde 1 día hasta 1 año.",
       },
     ],
     idealFor: [
@@ -274,10 +300,11 @@ export const products = [
       subtext:
         "Asegura hoy el retiro que te mereces y empieza a construir una etapa con mayor libertad y tranquilidad.",
     },
-    heroImage: {
-      src: "/images/sections/ppr-vertical.jpg",
-      alt: "Persona descansando en una silla de playa bajo una palmera, frente al mar.",
-    },
+    heroImage: productHeroImage(
+      "ppr",
+      [480, 800, 1080],
+      "Persona descansando en una silla de playa bajo una palmera, frente al mar.",
+    ),
     description:
       "El retiro no es el fin del trabajo, es el inicio de las vacaciones más largas de tu vida.",
     // Bloque de concientización destacado (entre Beneficios y "¿Es para
@@ -328,10 +355,11 @@ export const products = [
       subtext:
         "Protección pensada para cuidar el patrimonio que has construido, ante los imprevistos que pueden afectar tu hogar.",
     },
-    heroImage: {
-      src: "/images/sections/hogar-vertical.jpg",
-      alt: "Fachada de una vivienda contemporánea de líneas blancas.",
-    },
+    heroImage: productHeroImage(
+      "hogar",
+      [480, 800, 1200, 1600],
+      "Fachada de una vivienda contemporánea de líneas blancas.",
+    ),
     description:
       "Revisamos las características de tu vivienda y tu patrimonio para encontrar una protección a la medida de tu hogar.",
     benefits: [
@@ -440,8 +468,8 @@ export const processSteps = [
 // -----------------------------------------------------------------------------
 // Sobre Marina
 // -----------------------------------------------------------------------------
-// Fotos de Marina: WebP generados a partir de los PNG originales de
-// public/images/marina/ (que se conservan sin modificar), ya recortados a la
+// Fotos de Marina: WebP generados a partir de los PNG originales (se conservan
+// sin modificar en photos/originals/unused/images/marina/), ya recortados a la
 // proporción exacta de cada contenedor con el rostro en el tercio superior.
 // Se sirven en 3 anchos para cubrir 1x / 1.5x / 2x del contenedor (máx. 420px).
 const MARINA_IMAGE_WIDTHS = [420, 630, 840];

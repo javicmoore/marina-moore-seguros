@@ -15,7 +15,7 @@ import { business, contact } from "./siteConfig.js";
 
 export const SITE_URL = "https://marinamooreseguros.com";
 
-// Versión optimizada (1200x630, JPEG) de public/marinamoore-og.png.
+// Versión optimizada (1200x630, JPEG) de photos/originals/unused/marinamoore-og.png.
 export const ogImage = {
   url: `${SITE_URL}/marinamoore-og.jpg`,
   type: "image/jpeg",

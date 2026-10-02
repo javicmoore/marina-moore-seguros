@@ -43,9 +43,12 @@ function ProductPageLayout({ product }) {
             {product.heroImage && (
               <img
                 src={product.heroImage.src}
+                srcSet={product.heroImage.srcSet}
+                sizes={product.heroImage.sizes}
                 alt={product.heroImage.alt}
                 className={`product-hero__image product-hero__image--${product.slug}`}
                 loading="eager"
+                fetchPriority="high"
               />
             )}
           </div>

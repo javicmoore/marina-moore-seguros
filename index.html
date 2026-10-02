@@ -12,8 +12,11 @@
          vite-plugin-seo.js desde src/config/seo.js (un HTML por ruta en el build). -->
     <!-- seo-head -->
     <meta name="theme-color" content="#21476B" />
+    <!-- preload:start -->
     <!-- Primera foto del carrusel del hero (LCP en Home): se pide antes de que
-         cargue el JS. Mantener srcset/sizes sincronizados con HeroCarousel. -->
+         cargue el JS. Mantener srcset/sizes sincronizados con HeroCarousel.
+         Solo Home la conserva: vite-plugin-seo.js reemplaza este bloque
+         (preload:start/end) por la foto de cada producto o lo quita. -->
     <link
       rel="preload"
       as="image"
@@ -22,6 +25,7 @@
       imagesrcset="/images/hero/hero-auto-640.webp 640w, /images/hero/hero-auto-960.webp 960w, /images/hero/hero-auto-1280.webp 1280w, /images/hero/hero-auto-1920.webp 1920w"
       imagesizes="(min-width: 1600px) 1030px, (min-width: 1024px) calc(100vw - 624px), 92vw"
     />
+    <!-- preload:end -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
